@@ -1,6 +1,7 @@
 require 'environment'
 require 'active_support'
 require 'hpricot_additions'
+require 'pp'
 
 $KCODE = 'u'
 
@@ -180,7 +181,7 @@ class HansardSpeech
       when 'table'
         d << clean_content_table(f)
       else
-        throw "Unexpected tag #{f.name}"
+        STDERR.puts "Unexpected tag #{f.name}"
       end
     end
     if e.has_attribute?('label')
@@ -269,14 +270,14 @@ class HansardSpeech
       clean_content_graphic(e)
     when 'talker', 'name', 'electorate', 'role', 'time.stamp', 'tggroup', 'separator', 'colspec'
       ""
-    when 'talk.text', 'debate.text', 'subdebate.text' 
+    when 'talk.text', 'debate.text', 'subdebate.text', 'talk.start'
       ""
     when 'Error'
       # Should use @logger.warn here but can't because I don't have access to the logger object. Ho hum.
       puts "Came across an <Error> tag in the XML. That's probably not good. Skipping it."
       ""
     else
-      throw "Unexpected tag #{e.name}"
+      raise "Unexpected tag #{e.name}\n#{e.pretty_inspect}"
     end
   end
   

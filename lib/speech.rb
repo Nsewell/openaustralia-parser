@@ -18,7 +18,9 @@ class Speech < Section
       if @speaker.nil?
         @logger.error "#{@date} #{@house}: Empty speech in procedural text"
       else
-        @logger.error "#{@date} #{@house}: Empty speech by #{@speaker.person.name.full_name}"
+        #name = @speaker.person.name.full_name
+        name = @speaker.name
+        @logger.error "#{@date} #{@house}: Empty speech by #{name}"
       end
     end
     speaker_attributes = @speaker ? {:speakername => @speaker.name.full_name, :speakerid => @speaker.id} : {:nospeaker => "true"}
